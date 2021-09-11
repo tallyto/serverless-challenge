@@ -1,6 +1,6 @@
 import 'source-map-support/register'
 import { middyfy } from '@libs/lambda'
-import { FuncionarioModel } from 'src/model/funcionario'
+import { funcionarioFactory } from '@factory/funcionario-factory'
 
 export interface HandlerResponse {
   statusCode: number
@@ -8,34 +8,35 @@ export interface HandlerResponse {
 }
 
 const cadastro = async (event: any): Promise<HandlerResponse> => {
-  if (event.httpMethod === 'GET') { // Buscar um funcionario
-    const { id } = event.pathParameters
-    const funcionario = await FuncionarioModel.get(id)
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ funcionario })
+  const funcionario = funcionarioFactory()
+  let result = null
+  const { httpMethod, body } = event
+  const id = event.pathParameters ? event.pathParameters.id : null
+
+  try {
+    switch (httpMethod) {
+      case 'GET':
+        result = await funcionario.find(id)
+        break
+      case 'POST':
+        result = await funcionario.create(body)
+        break
+      case 'PUT':
+        result = await funcionario.update(id, body)
+        break
+      case 'DELETE':
+        result = await funcionario.delete(id)
+        break
     }
-  } else if (event.httpMethod === 'POST') { // Cadastrar um funcionario
-    const funcionario = await FuncionarioModel.create(event.body)
+
     return {
       statusCode: 200,
-      body: JSON.stringify({ funcionario })
+      body: JSON.stringify({ result })
     }
-  } else if (event.httpMethod === 'PUT') { // Atualizar um funcionario
-    const { id } = event.pathParameters
-    const funcionario = await FuncionarioModel.get(id)
-    const atualizarFuncionario = new FuncionarioModel({ ...funcionario, ...event.body })
-    await atualizarFuncionario.save()
+  } catch (error) {
     return {
-      statusCode: 200,
-      body: JSON.stringify({ atualizarFuncionario })
-    }
-  } else if (event.httpMethod === 'DELETE') { // Remover um funcionario
-    const { id } = event.pathParameters
-    const funcionario = FuncionarioModel.delete(id)
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ funcionario })
+      statusCode: 500,
+      body: JSON.stringify({ error })
     }
   }
 }
