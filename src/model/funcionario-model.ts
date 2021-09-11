@@ -1,6 +1,5 @@
 import * as dynamose from 'dynamoose'
 import { Document } from 'dynamoose/dist/Document'
-import * as uuid from 'uuid'
 
 export interface FuncionarioModel extends Document {
   id: string
@@ -12,8 +11,7 @@ export interface FuncionarioModel extends Document {
 const FuncionarioSchema = new dynamose.Schema({
   id: {
     hashKey: true,
-    type: String,
-    default: uuid.v4()
+    type: String
   },
   nome: {
     type: String,

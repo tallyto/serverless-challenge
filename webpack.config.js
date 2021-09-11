@@ -1,7 +1,7 @@
-const path = require('path');
-const slsw = require('serverless-webpack');
-const nodeExternals = require('webpack-node-externals');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const path = require('path')
+const slsw = require('serverless-webpack')
+const nodeExternals = require('webpack-node-externals')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 /*
 This line is only required if you are specifying `TS_NODE_PROJECT` for whatever reason.
@@ -19,17 +19,17 @@ module.exports = {
     cacheWithContext: false,
     plugins: [
       new TsconfigPathsPlugin({
-        configFile: './tsconfig.paths.json',
-      }),
-    ],
+        configFile: './tsconfig.paths.json'
+      })
+    ]
   },
   output: {
     libraryTarget: 'commonjs',
     path: path.join(__dirname, '.webpack'),
-    filename: '[name].js',
+    filename: '[name].js'
   },
   optimization: {
-    concatenateModules: false,
+    concatenateModules: false
   },
   target: 'node',
   externals: [nodeExternals()],
@@ -43,15 +43,15 @@ module.exports = {
           [
             path.resolve(__dirname, 'node_modules'),
             path.resolve(__dirname, '.serverless'),
-            path.resolve(__dirname, '.webpack'),
-          ],
+            path.resolve(__dirname, '.webpack')
+          ]
         ],
         options: {
           transpileOnly: true,
-          experimentalWatchApi: true,
-        },
-      },
-    ],
+          experimentalWatchApi: true
+        }
+      }
+    ]
   },
-  plugins: [],
-};
+  plugins: []
+}
