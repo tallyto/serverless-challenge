@@ -1,13 +1,13 @@
 import { Model } from 'dynamoose/dist/Model'
 import { Controller } from '../protocols/controller'
-
+import { v4 } from 'uuid'
 export class FuncionarioController implements Controller {
   constructor (private readonly model: Model) {
     this.model = model
   }
 
   async create (data: any): Promise<any> {
-    return await this.model.create(data)
+    return await this.model.create({ id: v4(), ...data })
   }
 
   async find (id: string): Promise<any> {
