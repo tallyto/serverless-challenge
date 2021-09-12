@@ -6,9 +6,9 @@
   "scripts": {
     "test": "NODE_ENV=test jest --passWithNoTests --runInBand",
     "coverage": "jest --passWithNoTests --coverage",
-    "offline": "AWS_PROFILE=live sls offline",
-    "deploy": "sls deploy --aws-profile live",
-    "remove": "sls remove --aws-profile live"
+    "offline": "sls offline",
+    "deploy": "sls deploy",
+    "remove": "sls remove"
   },
   "engines": {
     "node": ">=14.15.0"
