@@ -30,5 +30,5 @@ const FuncionarioSchema = new dynamose.Schema({
   saveUnknown: true,
   timestamps: true
 })
-
-export const funcionarioModel = dynamose.model<FuncionarioModel>('funcionarios', FuncionarioSchema)
+const createTable = process.env.NODE_ENV === 'test'
+export const funcionarioModel = dynamose.model<FuncionarioModel>(process.env.FUNCIONARIOS_TABLE, FuncionarioSchema, { create: createTable })
